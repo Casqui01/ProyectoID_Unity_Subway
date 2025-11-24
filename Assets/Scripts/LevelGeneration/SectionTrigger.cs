@@ -8,11 +8,13 @@ public class SectionTrigger : MonoBehaviour
 
     public GameObject roadSection;
 
+    public Vector3 posicion = new Vector3(30, 30, 0);
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Trigger"))
         {
-            Instantiate(roadSection, new Vector3(0, 0, 100), Quaternion.identity);
+            Instantiate(roadSection, posicion, Quaternion.identity);
         }
     }
 }
