@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnObject()
     {
-        GameObject obj = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        GameObject obj = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
 
         MovingObject mo = obj.AddComponent<MovingObject>();
         mo.target = targetPoint;
