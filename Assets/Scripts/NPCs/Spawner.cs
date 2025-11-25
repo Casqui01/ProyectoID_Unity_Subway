@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnObject", 0f, 2f); // crea uno cada 2 segundos
+        SpawnObject();
     }
 
     void SpawnObject()
