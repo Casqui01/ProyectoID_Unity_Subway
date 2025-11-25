@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4651910652484518126}
+  - component: {fileID: 9069804080578209079}
   m_Layer: 0
   m_Name: SegmentoCarretera
-  m_TagString: Untagged
+  m_TagString: Destroy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +47,19 @@ Transform:
   - {fileID: 4967364425984057740}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9069804080578209079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337112231826472102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fdbbe1fbe68ae6409a01ba593e21365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestroyOldSection
+  destroyDistance: 50
 --- !u!1 &6148673433850057067
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4967364425984057740}
   - component: {fileID: 7375938801735058475}
+  - component: {fileID: 8277215603985867678}
   m_Layer: 0
   m_Name: NewSection_Trigger
   m_TagString: Trigger
@@ -99,6 +114,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.1776865, y: 1, z: 1}
   m_Center: {x: -0.588843, y: 0, z: 0}
+--- !u!114 &8277215603985867678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148673433850057067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92d1c2f5c5f97e4c8b230eddc9d9ee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SectionTrigger
+  roadSection: {fileID: 4337112231826472102}
 --- !u!1 &6397863625530344194
 GameObject:
   m_ObjectHideFlags: 0
