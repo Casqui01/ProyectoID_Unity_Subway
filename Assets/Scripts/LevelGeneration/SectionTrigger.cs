@@ -2,47 +2,112 @@ using UnityEngine;
 
 public class SectionTrigger : MonoBehaviour
 {
-    public GameObject roadSection;
+    [Header("Configuración")]
+    [Tooltip("Distancia en Z donde se spawneará la siguiente sección")]
+    public float spawnDistance = 42f;
+    
+    [Header("Debug")]
+    [Tooltip("Mostrar mensajes de debug")]
+    public bool showDebug = false;
     
     private bool hasSpawned = false;
-
-    private void Start()
-    {
-        if (roadSection == null)
-        {
-            Debug.LogError("⚠️ SectionTrigger: No hay prefab asignado en roadSection!");
-        }
-    }
+    private static float lastSpawnTime = 0f;
+    private static float spawnCooldown = 0.5f; // Medio segundo de cooldown entre spawns
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"🔔 Trigger '{gameObject.name}' detectó: '{other.name}' con tag '{other.tag}' en posición {other.transform.position}");
-        
-        // Ignora si es otro trigger
-        if (other.CompareTag("Trigger"))
+        // Solo se activa con el jugador
+        if (!other.CompareTag("Player"))
         {
-            Debug.Log("⚠️ Es otro trigger, ignorando...");
+            if (showDebug)
+            {
+                Debug.Log($"🚫 Trigger ignorado - No es jugador: {other.gameObject.name}");
+            }
             return;
         }
         
-        if (!hasSpawned)
+        // Solo se ejecuta una vez
+        if (hasSpawned)
         {
-            hasSpawned = true;
+            if (showDebug)
+            {
+                Debug.Log($"🚫 Trigger ya activado en: {gameObject.name}");
+            }
+            return;
+        }
+        
+        // Cooldown global para evitar múltiples spawns simultáneos
+        if (Time.time - lastSpawnTime < spawnCooldown)
+        {
+            if (showDebug)
+            {
+                Debug.Log($"⏱️ Cooldown activo. Esperando {spawnCooldown - (Time.time - lastSpawnTime):F2}s");
+            }
+            hasSpawned = true; // Marca como spawneado aunque no lo haga
+            return;
+        }
+        
+        hasSpawned = true; // Marca INMEDIATAMENTE para evitar múltiples activaciones
+        lastSpawnTime = Time.time;
+        
+        if (showDebug)
+        {
+            Debug.Log($"🎯 Trigger activado en: {gameObject.name} por {other.gameObject.name}");
+        }
+        
+        // Verifica que el manager existe y tiene secciones
+        if (RoadSectionManager.Instance == null)
+        {
+            Debug.LogError("⚠️ SectionTrigger: No se encontró RoadSectionManager en la escena!");
+            return;
+        }
+
+        if (!RoadSectionManager.Instance.HasSections())
+        {
+            Debug.LogError("⚠️ SectionTrigger: RoadSectionManager no tiene prefabs asignados!");
+            return;
+        }
+        
+        // Genera 2 secciones consecutivas para mayor profundidad
+        for (int i = 0; i < 2; i++)
+        {
+            // Obtiene una sección aleatoria del manager
+            GameObject selectedSection = RoadSectionManager.Instance.GetRandomSection();
             
-            // Calcula la posición: 42 unidades adelante en Z desde la sección actual
+            if (selectedSection == null)
+            {
+                Debug.LogError("⚠️ SectionTrigger: No se pudo obtener una sección del manager!");
+                continue;
+            }
+            
+            // Calcula la posición: spawnDistance unidades adelante en Z desde la sección actual
+            // Multiplica por (i + 1) para la segunda sección
             Vector3 spawnPosition = new Vector3(
                 transform.parent.position.x, 
                 transform.parent.position.y, 
-                transform.parent.position.z + 42f
+                transform.parent.position.z + (spawnDistance * (i + 1))
             );
             
-            Debug.Log($"✅ ¡JUGADOR DETECTADO! Spawneando nueva sección en: {spawnPosition}");
-            GameObject newSection = Instantiate(roadSection, spawnPosition, Quaternion.identity);
-            Debug.Log($"✅ Nueva sección creada: {newSection.name}");
+            GameObject newSection = Instantiate(selectedSection, spawnPosition, Quaternion.identity);
+            
+            // Añade el script de destrucción si no lo tiene
+            if (newSection.GetComponent<DestroyOldSection>() == null)
+            {
+                DestroyOldSection destroyer = newSection.AddComponent<DestroyOldSection>();
+                destroyer.destroyDistance = 50f;
+            }
+            
+            Debug.Log($"✅ Spawneada sección {i + 1}: {selectedSection.name} en {spawnPosition}");
         }
-        else
+    }
+    
+    // Visualización en Scene view
+    private void OnDrawGizmos()
+    {
+        if (transform.parent != null)
         {
-            Debug.Log("⚠️ Ya spawneó antes, ignorando...");
+            Gizmos.color = hasSpawned ? Color.red : Color.green;
+            Gizmos.DrawWireSphere(transform.position, 1f);
         }
     }
 }
