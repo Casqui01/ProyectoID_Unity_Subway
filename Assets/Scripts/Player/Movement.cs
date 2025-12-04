@@ -12,6 +12,12 @@ public class Movement : MonoBehaviour
 
 	[Header("Movimiento")]
 	[SerializeField] private float lateralSpeed = 10f;    // velocidad de desplazamiento lateral
+	[SerializeField] private float forwardSpeed = 4f;     // velocidad de avance constante
+
+	[Header("Audio")]
+	[SerializeField] private AudioClip footstepSound;     // sonido de pisadas al cambiar de carril
+	[SerializeField] private AudioSource audioSource;     // referencia al AudioSource
+	[SerializeField] [Range(0f, 1f)] private float footstepVolume = 0.6f; // volumen de los pasos
 
 	private int currentLane;
 	private Vector3 targetPosition;
@@ -28,6 +34,21 @@ public class Movement : MonoBehaviour
 		baseY = transform.position.y;
 		baseZ = transform.position.z;
 		baseX = transform.position.x; // usar X inicial como referencia para los carriles
+
+		// Obtener el AudioSource si no está asignado
+		if (audioSource == null)
+		{
+			audioSource = GetComponent<AudioSource>();
+			if (audioSource == null)
+			{
+				audioSource = gameObject.AddComponent<AudioSource>();
+			}
+		}
+		
+		// Configurar AudioSource para evitar duplicaciones
+		audioSource.playOnAwake = false;
+		audioSource.loop = false;
+		audioSource.spatialBlend = 0f; // 2D sound
 
 		UpdateTargetPosition();
 		// asegúrate de empezar en la posición del carril relativo a baseX
@@ -52,8 +73,16 @@ public class Movement : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) MoveRight();
 #endif
 
-		// Movimiento suave hacia la posición objetivo
-		transform.position = Vector3.MoveTowards(transform.position, targetPosition, lateralSpeed * Time.deltaTime);
+		// Movimiento hacia adelante constante
+		transform.position += new Vector3(0, 0, forwardSpeed) * Time.deltaTime;
+
+		// Movimiento suave lateral hacia la posición objetivo
+		Vector3 currentPos = transform.position;
+		float newX = Mathf.MoveTowards(currentPos.x, targetPosition.x, lateralSpeed * Time.deltaTime);
+		transform.position = new Vector3(newX, currentPos.y, currentPos.z);
+		
+		// Actualizar targetPosition para seguir la posición Z actual
+		targetPosition.z = transform.position.z;
 	}
 
 	private void MoveLeft()
@@ -61,6 +90,7 @@ public class Movement : MonoBehaviour
 		if (currentLane <= 0) return; // ya en límite izquierdo
 		currentLane--;
 		UpdateTargetPosition();
+		PlayMoveSound(); // reproducir sonido al moverse
 	}
 
 	private void MoveRight()
@@ -68,6 +98,15 @@ public class Movement : MonoBehaviour
 		if (currentLane >= lanes - 1) return; // ya en límite derecho
 		currentLane++;
 		UpdateTargetPosition();
+		PlayMoveSound(); // reproducir sonido al moverse
+	}
+
+	private void PlayMoveSound()
+	{
+		if (audioSource != null && footstepSound != null && !audioSource.isPlaying)
+		{
+			audioSource.PlayOneShot(footstepSound, footstepVolume);
+		}
 	}
 
 	private void UpdateTargetPosition()
@@ -85,5 +124,28 @@ public class Movement : MonoBehaviour
 		if (clamped == currentLane) return;
 		currentLane = clamped;
 		UpdateTargetPosition();
+	}
+
+	// Métodos públicos para controlar la velocidad
+	public void SetForwardSpeed(float speed)
+	{
+		forwardSpeed = speed;
+	}
+
+	public float GetForwardSpeed()
+	{
+		return forwardSpeed;
+	}
+
+	// Detectar colisiones con triggers (para destruir secciones del mapa)
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Destroy"))
+		{
+			// Destruye la sección completa (el padre del trigger)
+			GameObject sectionToDestroy = other.transform.parent?.gameObject ?? other.gameObject;
+			Debug.Log($"🗑️ Destruyendo sección: {sectionToDestroy.name}");
+			Destroy(sectionToDestroy);
+		}
 	}
 }

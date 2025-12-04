@@ -31,11 +31,11 @@ public class DestroyOldSection : MonoBehaviour
         
         if (playerObj == null)
         {
-            // Si no tiene tag Player, busca por el script Move
-            Move moveScript = FindFirstObjectByType<Move>();
-            if (moveScript != null)
+            // Si no tiene tag Player, busca por el script Movement
+            Movement movementScript = FindFirstObjectByType<Movement>();
+            if (movementScript != null)
             {
-                playerObj = moveScript.gameObject;
+                playerObj = movementScript.gameObject;
             }
         }
         
