@@ -536,6 +536,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &154064002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154063989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73425382baa5b174db297241a7efa6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 3
+  currentHealth: 3
+  invulnerabilityDuration: 2
+  blinkInterval: 0.1
+  slowdownFactor: 0.5
+  slowdownDuration: 1
+  hitEffect: {fileID: 0}
+  hitSound: {fileID: 0}
+  showDebug: 1
 --- !u!1 &156438589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,6 +1213,8 @@ MonoBehaviour:
   score: 0
   isGameOver: 0
   gameOverUI: {fileID: 0}
+  gameOverSceneName: Has Perdido
+  gameOverDelay: 1.5
   showDebug: 1
 --- !u!4 &548994308
 Transform:
@@ -1448,6 +1471,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddf97b7e17f28b14dbc2b7806a7cd049, type: 3}
       insertIndex: -1
       addedObject: {fileID: 154064001}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddf97b7e17f28b14dbc2b7806a7cd049, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 154064002}
   m_SourcePrefab: {fileID: 100100000, guid: ddf97b7e17f28b14dbc2b7806a7cd049, type: 3}
 --- !u!1 &1107950572
 GameObject:

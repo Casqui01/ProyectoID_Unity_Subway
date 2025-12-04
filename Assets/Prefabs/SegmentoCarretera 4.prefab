@@ -280,6 +280,8 @@ MonoBehaviour:
   - {fileID: 4506581594151874708, guid: 1f95fbe6231642d488361b2fa06a4012, type: 3}
   - {fileID: 6313910132632838567, guid: 5ba23aa3986c64f4a803940b67347788, type: 3}
   - {fileID: 8521686077979822719, guid: 91e037da5c5ba2d48b3d2eada83e3044, type: 3}
+  - {fileID: 8116311408661575836, guid: 25adf643fe530444e88028c23f6d2f30, type: 3}
+  obstacleXOffset: 0
   minObstacles: 1
   maxObstacles: 3
   balancedDistribution: 1

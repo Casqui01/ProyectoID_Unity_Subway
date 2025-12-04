@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int maxLives = 3;
 	[SerializeField] private int currentLives = 3;
 	[SerializeField] private int score = 0;
+	[SerializeField] private int finalDistance = 0; // Distancia recorrida al morir
 	[SerializeField] private bool isGameOver = false;
 
 	[Header("Referencias")]
 	[SerializeField] private GameObject gameOverUI; // Panel de Game Over (opcional)
+	[SerializeField] private string gameOverSceneName = "Has Perdido"; // Nombre de la escena de Game Over
+	[SerializeField] private float gameOverDelay = 1.5f; // Delay antes de cambiar de escena
 
 	[Header("Debug")]
 	[SerializeField] private bool showDebug = true;
@@ -109,18 +112,41 @@ public class GameManager : MonoBehaviour
 
 		isGameOver = true;
 		
-		Debug.Log($"☠️ GAME OVER - Puntuación final: {score}");
+		// Guardar la distancia final antes de cambiar de escena
+		if (DistanceTracker.Instance != null)
+		{
+			finalDistance = DistanceTracker.Instance.GetDistanceMeters();
+		}
+		
+		Debug.Log($"☠️ GAME OVER - Puntuación: {score} | Distancia: {finalDistance}m");
 
 		OnGameOver?.Invoke();
 
-		// Pausar el juego
-		Time.timeScale = 0f;
-
-		// Mostrar UI de Game Over
+		// Mostrar UI de Game Over si existe (en la misma escena)
 		if (gameOverUI != null)
 		{
 			gameOverUI.SetActive(true);
 		}
+
+		// Cargar escena de Game Over después de un delay
+		if (!string.IsNullOrEmpty(gameOverSceneName))
+		{
+			Invoke(nameof(LoadGameOverScene), gameOverDelay);
+		}
+		else
+		{
+			// Si no hay escena de Game Over, pausar el juego
+			Time.timeScale = 0f;
+		}
+	}
+
+	/// <summary>
+	/// Cargar la escena de Game Over
+	/// </summary>
+	private void LoadGameOverScene()
+	{
+		Time.timeScale = 1f;
+		SceneManager.LoadScene(gameOverSceneName);
 	}
 
 	/// <summary>
@@ -146,5 +172,6 @@ public class GameManager : MonoBehaviour
 	public int GetCurrentLives() => currentLives;
 	public int GetMaxLives() => maxLives;
 	public int GetScore() => score;
+	public int GetFinalDistance() => finalDistance;
 	public bool IsGameOver() => isGameOver;
 }
