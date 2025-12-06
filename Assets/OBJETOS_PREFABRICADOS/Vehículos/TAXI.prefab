@@ -47,6 +47,8 @@ MonoBehaviour:
   prefab: {fileID: 8160049463398649625, guid: 66f97e68ed002b74f8e181d1c3108e14, type: 3}
   spawnPoint: {fileID: 2094847082266534997}
   targetPoint: {fileID: 4095603592774740615}
+  minSpeed: 2
+  maxSpeed: 20
 --- !u!1 &3719750879938567792
 GameObject:
   m_ObjectHideFlags: 0

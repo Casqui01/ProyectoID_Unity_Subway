@@ -68,7 +68,18 @@ public class PlayerHealth : MonoBehaviour
 	/// </summary>
 	public void TakeDamage(int damage = 1)
 	{
-		// Si es invulnerable, ignorar daño
+		// Verificar invulnerabilidad del InvincibilityController
+		InvincibilityController invincibilityController = GetComponent<InvincibilityController>();
+		if (invincibilityController != null && invincibilityController.IsInvincible())
+		{
+			if (showDebug)
+			{
+				Debug.Log("🛡️ Jugador invulnerable (power-up) - Daño bloqueado");
+			}
+			return;
+		}
+
+		// Si es invulnerable por el sistema normal, ignorar daño
 		if (isInvulnerable)
 		{
 			if (showDebug)
@@ -175,26 +186,29 @@ public class PlayerHealth : MonoBehaviour
 			yield break;
 		}
 
+		// Guardar la velocidad actual (puede haber aumentado por el DistanceTracker)
+		float currentSpeed = movementScript.GetForwardSpeed();
+
 		// Reducir velocidad
-		float slowedSpeed = originalForwardSpeed * slowdownFactor;
+		float slowedSpeed = currentSpeed * slowdownFactor;
 		movementScript.SetForwardSpeed(slowedSpeed);
 
 		if (showDebug)
 		{
-			Debug.Log($"🐌 Velocidad reducida a {slowedSpeed:F1} por {slowdownDuration}s");
+			Debug.Log($"🐌 Velocidad reducida de {currentSpeed:F1} a {slowedSpeed:F1} por {slowdownDuration}s");
 		}
 
 		// Esperar
 		yield return new WaitForSeconds(slowdownDuration);
 
-		// Restaurar velocidad (verificar que el objeto sigue existiendo)
+		// Restaurar velocidad actual (no la original, sino la que tenía antes del choque)
 		if (movementScript != null && this != null)
 		{
-			movementScript.SetForwardSpeed(originalForwardSpeed);
+			movementScript.SetForwardSpeed(currentSpeed);
 
 			if (showDebug)
 			{
-				Debug.Log($"⚡ Velocidad restaurada a {originalForwardSpeed:F1}");
+				Debug.Log($"⚡ Velocidad restaurada a {currentSpeed:F1}");
 			}
 		}
 	}
