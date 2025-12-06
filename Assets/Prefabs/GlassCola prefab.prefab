@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3955900599211776840
+--- !u!1 &1145535761173696109
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,31 +8,31 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7138201497864479910}
+  - component: {fileID: 4571287172661455703}
   m_Layer: 0
-  m_Name: Bank_sign Prefab 1
+  m_Name: GlassCola prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7138201497864479910
+--- !u!4 &4571287172661455703
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3955900599211776840}
+  m_GameObject: {fileID: 1145535761173696109}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.4139, y: 0.1722, z: -0.7763}
-  m_LocalScale: {x: 0.03032202, y: 0.03032202, z: 0.03032202}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.7087126, y: 4.375, z: -27.287}
+  m_LocalScale: {x: 0.04532202, y: 0.04532202, z: 0.04532202}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5491030436978419874}
+  - {fileID: 2678334436684947099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4668827439353597211
+--- !u!1 &2096617045074127728
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,48 +40,68 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5491030436978419874}
-  - component: {fileID: 7938080482450857647}
-  - component: {fileID: 8525646527894485448}
-  - component: {fileID: 354112565556194580}
-  - component: {fileID: 8009215077959150008}
+  - component: {fileID: 2678334436684947099}
+  - component: {fileID: 611718675454627632}
+  - component: {fileID: 1112784237258492333}
+  - component: {fileID: 6303429265946921429}
+  - component: {fileID: 3737587393663240985}
   m_Layer: 0
-  m_Name: Bank_sign
+  m_Name: GlassCoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5491030436978419874
+--- !u!4 &2678334436684947099
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4668827439353597211}
+  m_GameObject: {fileID: 2096617045074127728}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.000000026692547, y: -0.70710677, z: -0.000000026692545, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.336}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 99.99997, z: 99.99997}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7138201497864479910}
+  m_Father: {fileID: 4571287172661455703}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7938080482450857647
+--- !u!33 &611718675454627632
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4668827439353597211}
-  m_Mesh: {fileID: 4300000, guid: 70f7dc573b688f544abea3f85bcaa05d, type: 3}
---- !u!23 &8525646527894485448
+  m_GameObject: {fileID: 2096617045074127728}
+  m_Mesh: {fileID: 4300000, guid: 9caecad2fe4bf014380a25614ef18115, type: 3}
+--- !u!114 &1112784237258492333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096617045074127728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11587e7284b895c4885bb38cf1ef3153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpeedBoost
+  rotationSpeed: 180
+  rotationAxis: {x: 0, y: 1, z: 0}
+  collectEffect: {fileID: 0}
+  collectSound: {fileID: 0}
+  soundVolume: 0.7
+  speedMultiplier: 2
+  boostDuration: 5
+  showDebug: 0
+--- !u!23 &6303429265946921429
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4668827439353597211}
+  m_GameObject: {fileID: 2096617045074127728}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -100,7 +120,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2d6209e982156604ea6d7c513bc7b774, type: 2}
+  - {fileID: 2100000, guid: 7d314c3142c10a541834f32c2573cb0e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,13 +143,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &354112565556194580
+--- !u!65 &3737587393663240985
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4668827439353597211}
+  m_GameObject: {fileID: 2096617045074127728}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -142,21 +162,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.00526, y: 0.008090001, z: 0.00082000025}
-  m_Center: {x: -0.0032620002, y: 0.0028650002, z: -1.2133748e-24}
---- !u!114 &8009215077959150008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4668827439353597211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1936dc98e1a61124897661b8ade9b90a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Coin
-  rotationSpeed: 180
-  rotationAxis: {x: 0, y: 1, z: 0}
-  sparkleEffect: {fileID: 0}
-  collectSound: {fileID: 0}
+  m_Size: {x: 0.00068001717, y: 0.000680017, z: 0.0021554069}
+  m_Center: {x: -1.4551915e-11, y: -0.000053088723, z: 0.0010833184}

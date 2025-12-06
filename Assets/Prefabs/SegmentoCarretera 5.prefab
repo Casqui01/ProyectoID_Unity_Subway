@@ -303,6 +303,13 @@ MonoBehaviour:
   allowMultipleInRow: 0
   coinPrefab: {fileID: 3955900599211776840, guid: f9f503de17a8e9849be243650ac42b27, type: 3}
   coinsToSpawn: 3
+  healthPickupPrefab: {fileID: 7328215645225561671, guid: 15b0b8e8a0372d748a365120b603788d, type: 3}
+  speedBoostPrefab: {fileID: 1145535761173696109, guid: 622b08baabd833f4bbb4f96e1c13f7cc, type: 3}
+  invincibilityPickupPrefab: {fileID: 8639343004163895879, guid: 032427c3830b6934abf29889f63122fd, type: 3}
+  powerUpSpawnChance: 30
+  healthPickupWeight: 50
+  speedBoostWeight: 30
+  invincibilityWeight: 20
   showDebug: 1
   generateOnStart: 1
 --- !u!1 &7412477022813031200

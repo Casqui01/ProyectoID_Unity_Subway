@@ -56,6 +56,28 @@ public class ObstacleSpawner : MonoBehaviour
 	[Tooltip("Número de monedas a generar")]
 	[SerializeField] private int coinsToSpawn = 3;
 	
+	[Header("Power-ups")]
+	[Tooltip("Prefab de HealthPickup")]
+	[SerializeField] private GameObject healthPickupPrefab;
+	
+	[Tooltip("Prefab de SpeedBoost")]
+	[SerializeField] private GameObject speedBoostPrefab;
+	
+	[Tooltip("Prefab de InvincibilityPickup")]
+	[SerializeField] private GameObject invincibilityPickupPrefab;
+	
+	[Tooltip("Probabilidad de spawnear un power-up (0-100%)")]
+	[SerializeField] [Range(0f, 100f)] private float powerUpSpawnChance = 30f;
+	
+	[Tooltip("Peso relativo para HealthPickup (mayor = más común)")]
+	[SerializeField] private int healthPickupWeight = 50;
+	
+	[Tooltip("Peso relativo para SpeedBoost")]
+	[SerializeField] private int speedBoostWeight = 30;
+	
+	[Tooltip("Peso relativo para InvincibilityPickup")]
+	[SerializeField] private int invincibilityWeight = 20;
+	
 	[Header("Debug")]
 	[SerializeField] private bool showDebug = false;
 	[SerializeField] private bool generateOnStart = true;
@@ -68,6 +90,7 @@ public class ObstacleSpawner : MonoBehaviour
 		{
 			GenerateObstacles();
 			GenerateCoins();
+			GeneratePowerUps();
 		}
 	}
 
@@ -237,6 +260,118 @@ public class ObstacleSpawner : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Genera power-ups aleatorios basados en probabilidad y peso
+	/// </summary>
+	public void GeneratePowerUps()
+	{
+		// Verificar si se debe spawnear un power-up basado en probabilidad
+		if (Random.Range(0f, 100f) > powerUpSpawnChance)
+		{
+			if (showDebug) Debug.Log("🎲 No se spawneó power-up (probabilidad)");
+			return;
+		}
+
+		// Seleccionar qué tipo de power-up basado en pesos
+		GameObject selectedPrefab = SelectRandomPowerUp();
+		
+		if (selectedPrefab == null)
+		{
+			if (showDebug) Debug.LogWarning("⚠️ No hay prefabs de power-ups asignados");
+			return;
+		}
+
+		// Generar posición aleatoria
+		float zPos = Random.Range(minZDistance, maxZDistance);
+		int lane = Random.Range(0, lanes);
+		
+		// Usar las posiciones X específicas de los carriles
+		float xPos = (lane < lanePositionsX.Length) ? lanePositionsX[lane] : -11f;
+		
+		Vector3 spawnPosition = new Vector3(xPos, spawnHeight + 1.5f, transform.position.z + zPos);
+		
+		// Verificar que no haya obstáculo muy cerca
+		bool tooClose = false;
+		foreach (Vector3 obsPos in occupiedPositions)
+		{
+			if (Vector3.Distance(obsPos, spawnPosition) < 5f)
+			{
+				tooClose = true;
+				break;
+			}
+		}
+		
+		if (!tooClose)
+		{
+			GameObject powerUp = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity, transform);
+			
+			if (showDebug)
+			{
+				Debug.Log($"⭐ Power-up '{selectedPrefab.name}' spawneado en carril {lane}, Z: {zPos:F1}");
+			}
+		}
+		else
+		{
+			if (showDebug) Debug.Log("⚠️ Power-up muy cerca de obstáculo, no spawneado");
+		}
+	}
+
+	/// <summary>
+	/// Selecciona un power-up aleatorio basado en los pesos configurados
+	/// </summary>
+	private GameObject SelectRandomPowerUp()
+	{
+		// Crear lista de opciones disponibles con sus pesos
+		List<GameObject> availablePowerUps = new List<GameObject>();
+		List<int> weights = new List<int>();
+
+		if (healthPickupPrefab != null)
+		{
+			availablePowerUps.Add(healthPickupPrefab);
+			weights.Add(healthPickupWeight);
+		}
+
+		if (speedBoostPrefab != null)
+		{
+			availablePowerUps.Add(speedBoostPrefab);
+			weights.Add(speedBoostWeight);
+		}
+
+		if (invincibilityPickupPrefab != null)
+		{
+			availablePowerUps.Add(invincibilityPickupPrefab);
+			weights.Add(invincibilityWeight);
+		}
+
+		if (availablePowerUps.Count == 0)
+		{
+			return null;
+		}
+
+		// Calcular peso total
+		int totalWeight = 0;
+		foreach (int weight in weights)
+		{
+			totalWeight += weight;
+		}
+
+		// Seleccionar basado en peso
+		int randomValue = Random.Range(0, totalWeight);
+		int cumulativeWeight = 0;
+
+		for (int i = 0; i < availablePowerUps.Count; i++)
+		{
+			cumulativeWeight += weights[i];
+			if (randomValue < cumulativeWeight)
+			{
+				return availablePowerUps[i];
+			}
+		}
+
+		// Fallback (no debería llegar aquí)
+		return availablePowerUps[availablePowerUps.Count - 1];
 	}
 
 	/// <summary>
