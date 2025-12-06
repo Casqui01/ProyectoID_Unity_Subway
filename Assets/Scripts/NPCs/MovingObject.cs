@@ -7,6 +7,13 @@ public class MovingObject : MonoBehaviour
 
     void Update()
     {
+        // Verificar si el target existe antes de usarlo
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         // Mover hacia el destino
         transform.position = Vector3.MoveTowards(
             transform.position,

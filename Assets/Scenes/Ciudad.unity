@@ -1211,6 +1211,7 @@ MonoBehaviour:
   maxLives: 3
   currentLives: 3
   score: 0
+  finalDistance: 0
   isGameOver: 0
   gameOverUI: {fileID: 0}
   gameOverSceneName: Has Perdido
@@ -2633,6 +2634,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1646292663}
     m_Modifications:
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: spawnHeight
+      value: 3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: obstacleRotationY
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: obstaclePrefabs.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7897738559493160464, guid: 035934dd491d2cf4c815ebe24ef02403, type: 3}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 5963575855110183051, guid: 42fd336c83e55ea4183b310a54c2a297, type: 3}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 615168937553969974, guid: 774d95864abf33f4e8ba3ceb3bcbe179, type: 3}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[6]'
+      value: 
+      objectReference: {fileID: 1414018057299060220, guid: fbf428ae81776934ca9cad79e82fc038, type: 3}
+    - target: {fileID: 466552009127315463, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[7]'
+      value: 
+      objectReference: {fileID: 3719750879938567792, guid: 7c6d22932fc1d9b4b836f79225b2077b, type: 3}
     - target: {fileID: 3290841460459054304, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
       propertyPath: m_LocalScale.y
       value: 158.55077

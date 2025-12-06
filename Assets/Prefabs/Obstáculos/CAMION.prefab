@@ -143,3 +143,5 @@ MonoBehaviour:
   prefab: {fileID: 9189002782948893723, guid: bf49b486ffae2c2429b4fd41e96023c3, type: 3}
   spawnPoint: {fileID: 8667529966358853343}
   targetPoint: {fileID: 5753634761000090366}
+  minSpeed: 2
+  maxSpeed: 20

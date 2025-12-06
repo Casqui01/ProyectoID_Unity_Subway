@@ -279,7 +279,11 @@ MonoBehaviour:
   - {fileID: 4506581594151874708, guid: 1f95fbe6231642d488361b2fa06a4012, type: 3}
   - {fileID: 6313910132632838567, guid: 5ba23aa3986c64f4a803940b67347788, type: 3}
   - {fileID: 8521686077979822719, guid: 91e037da5c5ba2d48b3d2eada83e3044, type: 3}
-  - {fileID: 8116311408661575836, guid: 25adf643fe530444e88028c23f6d2f30, type: 3}
+  - {fileID: 7897738559493160464, guid: 035934dd491d2cf4c815ebe24ef02403, type: 3}
+  - {fileID: 5963575855110183051, guid: 42fd336c83e55ea4183b310a54c2a297, type: 3}
+  - {fileID: 615168937553969974, guid: 774d95864abf33f4e8ba3ceb3bcbe179, type: 3}
+  - {fileID: 1414018057299060220, guid: fbf428ae81776934ca9cad79e82fc038, type: 3}
+  - {fileID: 3719750879938567792, guid: 7c6d22932fc1d9b4b836f79225b2077b, type: 3}
   obstacleXOffset: 0
   minObstacles: 1
   maxObstacles: 3
@@ -289,8 +293,8 @@ MonoBehaviour:
   - -15.02
   - -13.02
   - -11.02
-  spawnHeight: 4.4418
-  obstacleRotationY: 90
+  spawnHeight: 3.95
+  obstacleRotationY: 180
   minZDistance: 5
   maxZDistance: 35
   minObstacleSpacing: 8

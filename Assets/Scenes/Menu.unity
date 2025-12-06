@@ -762,7 +762,7 @@ MonoBehaviour:
   musicVolume: 0.5
   urbanAmbience: {fileID: 8300000, guid: bd6d3c2cf4c757c45a1579c0f601f913, type: 3}
   ambienceSource: {fileID: 0}
-  ambienceVolume: 0.3
+  ambienceVolume: 1
   coinSound: {fileID: 8300000, guid: 988545e8e6e914a4f9c3ec00791fdf3a, type: 3}
   sfxSource: {fileID: 0}
   sfxVolume: 0.7
