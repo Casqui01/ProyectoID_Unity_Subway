@@ -111,9 +111,13 @@ public class GameUI : MonoBehaviour
 			}
 			else if (lifeIcon != null)
 			{
-				// Si hay imagen sprite, solo mostrar número
+				// Mostrar imagen + número
 				livesText.text = $"{lives}/{maxLives}";
 				lifeIcon.gameObject.SetActive(true);
+				// Asegurar que la imagen sea visible (opacidad máxima)
+				Color color = lifeIcon.color;
+				color.a = 1f;
+				lifeIcon.color = color;
 			}
 			else
 			{
