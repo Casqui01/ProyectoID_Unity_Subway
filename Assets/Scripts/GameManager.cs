@@ -48,6 +48,118 @@ public class GameManager : MonoBehaviour
 		{
 			gameOverUI.SetActive(false);
 		}
+		
+		// Suscribirse al evento de carga de escena
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+	
+	void OnDestroy()
+	{
+		// Desuscribirse del evento
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+	
+	/// <summary>
+	/// Limpia objetos cuando se carga una escena nueva
+	/// </summary>
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		Debug.Log($"🎬 Escena cargada: {scene.name} (modo: {mode})");
+		
+		if (scene.name == "Menu" || scene.name == "has Perdido")
+		{
+			CleanupGameObjects();
+		}
+		else if (scene.name == "Ciudad")
+		{
+			Debug.Log("🎮 Escena 'Ciudad' detectada - Iniciando reseteo...");
+			// Reiniciar estado del juego cuando se carga la escena de juego
+			ResetGameState();
+		}
+	}
+	
+	/// <summary>
+	/// Reinicia el estado del juego para una nueva partida
+	/// </summary>
+	void ResetGameState()
+	{
+		Debug.Log("🔄 ResetGameState() iniciado");
+		
+		currentLives = maxLives;
+		score = 0;
+		finalDistance = 0;
+		isGameOver = false;
+		
+		if (gameOverUI != null)
+		{
+			gameOverUI.SetActive(false);
+		}
+		
+		// Esperar un frame para que todos los objetos de la escena estén listos
+		StartCoroutine(ResetGameStateDelayed());
+	}
+	
+	/// <summary>
+	/// Reseteo diferido para asegurar que todos los objetos están listos
+	/// </summary>
+	System.Collections.IEnumerator ResetGameStateDelayed()
+	{
+		yield return new WaitForEndOfFrame();
+		
+		Debug.Log("🔄 Ejecutando reseteo diferido...");
+		
+		// Resetear todos los triggers de secciones para que puedan spawnearse de nuevo
+		SectionTrigger.ResetAllTriggers();
+		
+		// Resetear el tracking de spawn del RoadSectionManager
+		if (RoadSectionManager.Instance != null)
+		{
+			RoadSectionManager.Instance.ResetSpawnTracking();
+		}
+		
+		// Regenerar secciones iniciales para dar profundidad
+		Debug.Log("🔍 Buscando LevelInitializer...");
+		LevelInitializer initializer = FindFirstObjectByType<LevelInitializer>();
+		if (initializer != null)
+		{
+			Debug.Log($"✅ LevelInitializer encontrado en: {initializer.gameObject.name}");
+			initializer.RegenerateInitialSections();
+		}
+		else
+		{
+			Debug.LogWarning("⚠️ No se encontró LevelInitializer para regenerar secciones. Asegúrate de que está en la escena 'Ciudad'.");
+		}
+		
+		// Notificar a los listeners
+		OnLivesChanged?.Invoke();
+		OnScoreChanged?.Invoke();
+		
+		if (showDebug)
+		{
+			Debug.Log("✅ Estado del juego reiniciado completamente");
+		}
+	}
+	
+	/// <summary>
+	/// Destruye todos los objetos spawneados del juego
+	/// </summary>
+	void CleanupGameObjects()
+	{
+		// Destruir secciones de carretera (excepto las permanentes)
+		DestroyOldSection[] destroyers = FindObjectsByType<DestroyOldSection>(FindObjectsSortMode.None);
+		foreach (DestroyOldSection destroyer in destroyers)
+		{
+			// No destruir secciones marcadas como permanentes
+			if (!destroyer.isPermanent)
+			{
+				Destroy(destroyer.gameObject);
+			}
+		}
+		
+		if (showDebug)
+		{
+			Debug.Log("🧹 Objetos del juego limpiados (secciones permanentes conservadas)");
+		}
 	}
 
 	/// <summary>
@@ -71,6 +183,23 @@ public class GameManager : MonoBehaviour
 		{
 			GameOver();
 		}
+	}
+
+	/// <summary>
+	/// Actualizar las vidas del jugador (para curaciones)
+	/// </summary>
+	public void UpdateLives(int newLives)
+	{
+		if (isGameOver) return;
+
+		currentLives = Mathf.Clamp(newLives, 0, maxLives);
+
+		if (showDebug)
+		{
+			Debug.Log($"💚 Vidas actualizadas: {currentLives}/{maxLives}");
+		}
+
+		OnLivesChanged?.Invoke();
 	}
 
 	/// <summary>
@@ -164,6 +293,27 @@ public class GameManager : MonoBehaviour
 	public void LoadMainMenu()
 	{
 		Time.timeScale = 1f;
+		
+		// Limpiar todas las secciones de carretera spawneadas
+		GameObject[] roadSections = GameObject.FindGameObjectsWithTag("Untagged");
+		foreach (GameObject obj in roadSections)
+		{
+			if (obj.name.Contains("Section") || obj.name.Contains("SegmentoCarretera"))
+			{
+				Destroy(obj);
+			}
+		}
+		
+		// Limpiar todos los objetos spawneados (NPCs, pickups, etc) excepto permanentes
+		DestroyOldSection[] destroyers = FindObjectsByType<DestroyOldSection>(FindObjectsSortMode.None);
+		foreach (DestroyOldSection destroyer in destroyers)
+		{
+			if (!destroyer.isPermanent)
+			{
+				Destroy(destroyer.gameObject);
+			}
+		}
+		
 		// Cambia "MainMenu" por el nombre de tu escena de menú
 		SceneManager.LoadScene("MainMenu");
 	}

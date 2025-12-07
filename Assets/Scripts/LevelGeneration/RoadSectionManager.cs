@@ -7,6 +7,13 @@ public class RoadSectionManager : MonoBehaviour
     [Header("Pool de Secciones")]
     [Tooltip("Array de diferentes prefabs de secciones. Se elegirá uno aleatoriamente.")]
     public GameObject[] roadSectionPrefabs;
+    
+    [Header("Spawning")]
+    [Tooltip("Distancia entre secciones")]
+    public float sectionLength = 42f;
+    
+    // Track de la última posición Z spawneada
+    private float lastSpawnedZ = 0f;
 
     private void Awake()
     {
@@ -54,5 +61,57 @@ public class RoadSectionManager : MonoBehaviour
     public bool HasSections()
     {
         return roadSectionPrefabs != null && roadSectionPrefabs.Length > 0;
+    }
+    
+    /// <summary>
+    /// Obtiene la siguiente posición Z válida para spawneo
+    /// </summary>
+    public float GetNextSpawnZ()
+    {
+        lastSpawnedZ += sectionLength;
+        return lastSpawnedZ;
+    }
+    
+    /// <summary>
+    /// Obtiene la siguiente posición Z válida basada en una posición de referencia
+    /// </summary>
+    public float GetNextSpawnZFrom(float referenceZ)
+    {
+        // Calcula la siguiente posición basada en la referencia
+        float nextZ = referenceZ + sectionLength;
+        
+        // Actualiza lastSpawnedZ solo si la nueva posición es mayor
+        if (nextZ > lastSpawnedZ)
+        {
+            lastSpawnedZ = nextZ;
+        }
+        
+        return nextZ;
+    }
+    
+    /// <summary>
+    /// Establece la última posición Z spawneada (útil para inicialización)
+    /// </summary>
+    public void SetLastSpawnZ(float z)
+    {
+        lastSpawnedZ = z;
+        Debug.Log($"📍 RoadSectionManager: lastSpawnedZ actualizado a {lastSpawnedZ}");
+    }
+    
+    /// <summary>
+    /// Obtiene la última posición Z spawneada
+    /// </summary>
+    public float GetLastSpawnZ()
+    {
+        return lastSpawnedZ;
+    }
+    
+    /// <summary>
+    /// Resetea el tracking de posición Z (llamar al reiniciar juego)
+    /// </summary>
+    public void ResetSpawnTracking()
+    {
+        lastSpawnedZ = 0f;
+        Debug.Log("🔄 RoadSectionManager: Tracking de spawn reseteado");
     }
 }

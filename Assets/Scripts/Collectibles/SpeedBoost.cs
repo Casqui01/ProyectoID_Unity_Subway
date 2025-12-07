@@ -33,8 +33,8 @@ public class SpeedBoost : MonoBehaviour
 
     void Update()
     {
-        // Rotación continua
-        transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime, Space.Self);
+        // Rotación continua horizontal
+        transform.Rotate(0, rotationSpeed * Time.deltaTime, 0, Space.World);
     }
 
     private void OnTriggerEnter(Collider other)

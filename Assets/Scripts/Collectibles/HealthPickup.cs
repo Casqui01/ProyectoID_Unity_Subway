@@ -17,9 +17,6 @@ public class HealthPickup : MonoBehaviour
     [Header("Valores")]
     [SerializeField] private int healthAmount = 1; // Cantidad de vidas que otorga
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebug = false;
-
     void Start()
     {
         // Asegurar que el collider sea trigger
@@ -32,8 +29,8 @@ public class HealthPickup : MonoBehaviour
 
     void Update()
     {
-        // Rotación continua
-        transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime, Space.Self);
+        // Rotación continua horizontal
+        transform.Rotate(0, rotationSpeed * Time.deltaTime, 0, Space.World);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,17 +44,18 @@ public class HealthPickup : MonoBehaviour
 
     void Collect(GameObject player)
     {
+        Debug.Log($"💚 HealthPickup: Intentando curar al jugador {player.name}");
+        
         // Buscar el componente PlayerHealth
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
+            Debug.Log($"💚 HealthPickup: PlayerHealth encontrado. Vida actual: {playerHealth.GetCurrentHealth()}/{playerHealth.GetMaxHealth()}");
+            
             // Dar vida extra
             playerHealth.Heal(healthAmount);
 
-            if (showDebug)
-            {
-                Debug.Log($"💚 Vida extra recogida! +{healthAmount} vida(s)");
-            }
+            Debug.Log($"💚 Vida extra recogida! +{healthAmount} vida(s). Nueva vida: {playerHealth.GetCurrentHealth()}/{playerHealth.GetMaxHealth()}");
         }
         else
         {

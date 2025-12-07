@@ -1476,6 +1476,60 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 154064002}
   m_SourcePrefab: {fileID: 100100000, guid: ddf97b7e17f28b14dbc2b7806a7cd049, type: 3}
+--- !u!1 &917885122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 917885124}
+  - component: {fileID: 917885123}
+  m_Layer: 0
+  m_Name: CicloDiaNoche
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &917885123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917885122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e69a97b3bb9af408835455ae12db14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayNightCycle
+  daySkybox: {fileID: 2100000, guid: dfd5fe4561034804291bb92fffe808d9, type: 2}
+  nightSkybox: {fileID: 2100000, guid: 2693a75b9cc71fb4bae0674a2e512e59, type: 2}
+  directionalLight: {fileID: 394541991}
+  cycleDuration: 200
+  startTime: 0.25
+  dayLightIntensity: 1.5
+  dayLightColor: {r: 1, g: 0.95, b: 0.9, a: 1}
+  nightLightIntensity: 0.3
+  nightLightColor: {r: 0.5, g: 0.6, b: 0.8, a: 1}
+  transitionSpeed: 1
+--- !u!4 &917885124
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917885122}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -25.81077, y: 1.2, z: 25.22145}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1107950572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2357,6 +2411,7 @@ MonoBehaviour:
   - {fileID: 5425154983354512974, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
   - {fileID: 5425154983354512974, guid: c627398bfaa6ca044a14a4e16e59a550, type: 3}
   - {fileID: 5425154983354512974, guid: d0828e696e886bf428453ea77cd60922, type: 3}
+  - {fileID: 5425154983354512974, guid: a547ef89ce48f944c8f4dfc356de32b3, type: 3}
 --- !u!4 &1646292663
 Transform:
   m_ObjectHideFlags: 0
@@ -2817,6 +2872,10 @@ PrefabInstance:
       value: 0.000068611
       objectReference: {fileID: 0}
     - target: {fileID: 4330764786923154250, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: showDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4330764786923154250, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
       propertyPath: roadSections.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -2878,6 +2937,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8572593264492235761, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
       propertyPath: showDebug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572593264492235761, guid: d4dddc0370403974c99aeb4c2d1da7b7, type: 3}
+      propertyPath: isPermanent
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2990,3 +3053,4 @@ SceneRoots:
   - {fileID: 1741344159205357997}
   - {fileID: 2936833907959758640}
   - {fileID: 7737531531607895000}
+  - {fileID: 917885124}

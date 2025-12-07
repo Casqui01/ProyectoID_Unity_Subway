@@ -15,11 +15,31 @@ public class LevelInitializer : MonoBehaviour
 
     private void Start()
     {
-        // Espera un frame para asegurar que RoadSectionManager está inicializado
+        Debug.Log("🚀 LevelInitializer.Start() llamado");
+        // Suscribirse al evento de carga de escena
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        // Generar secciones en el primer Start
         Invoke(nameof(GenerateInitialSections), 0.1f);
     }
-
-    private void GenerateInitialSections()
+    
+    private void OnDestroy()
+    {
+        // Desuscribirse al destruir
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    /// <summary>
+    /// Se llama cuando se carga una escena
+    /// </summary>
+	private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+	{
+		if (scene.name == "Ciudad")
+		{
+			Debug.Log("🎮 Escena 'Ciudad' cargada - Regenerando secciones iniciales");
+			Invoke(nameof(GenerateInitialSections), 0.1f);
+		}
+	}    private void GenerateInitialSections()
     {
         // Verifica que el manager existe
         if (RoadSectionManager.Instance == null)
@@ -34,7 +54,13 @@ public class LevelInitializer : MonoBehaviour
             return;
         }
 
+        // Primero limpiar secciones anteriores (excepto permanentes)
+        CleanupOldSections();
+
         Debug.Log($"🎮 Generando {initialSections} secciones iniciales...");
+        
+        // Resetear el tracking de spawn del manager
+        RoadSectionManager.Instance.ResetSpawnTracking();
 
         // Genera las secciones iniciales
         for (int i = 0; i < initialSections; i++)
@@ -43,7 +69,10 @@ public class LevelInitializer : MonoBehaviour
             
             if (selectedSection != null)
             {
-                Vector3 spawnPosition = startPosition + new Vector3(0f, 0f, i * sectionDistance);
+                // Usa el tracking global para obtener la siguiente posición Z válida
+                float nextZ = RoadSectionManager.Instance.GetNextSpawnZ();
+                Vector3 spawnPosition = new Vector3(0f, 0f, nextZ);
+                
                 GameObject newSection = Instantiate(selectedSection, spawnPosition, Quaternion.identity);
                 newSection.name = $"Section_Initial_{i + 1}";
                 
@@ -58,10 +87,43 @@ public class LevelInitializer : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// Limpia las secciones spawneadas anteriormente (excepto permanentes)
+    /// </summary>
+    private void CleanupOldSections()
+    {
+        DestroyOldSection[] allSections = FindObjectsByType<DestroyOldSection>(FindObjectsSortMode.None);
+        int cleanedCount = 0;
+        
+        foreach (DestroyOldSection section in allSections)
+        {
+            // No destruir secciones permanentes
+            if (!section.isPermanent)
+            {
+                Destroy(section.gameObject);
+                cleanedCount++;
+            }
+        }
+        
+        if (cleanedCount > 0)
+        {
+            Debug.Log($"🧹 {cleanedCount} secciones antiguas limpiadas");
+        }
+    }
 
     // Método público para ajustar secciones iniciales en runtime si es necesario
     public void SetInitialSections(int count)
     {
         initialSections = Mathf.Clamp(count, 1, 10);
+    }
+    
+    /// <summary>
+    /// Regenera las secciones iniciales (para cuando se reinicia el juego)
+    /// </summary>
+    public void RegenerateInitialSections()
+    {
+        Debug.Log("🔄 RegenerateInitialSections() llamado manualmente");
+        GenerateInitialSections();
     }
 }

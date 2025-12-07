@@ -8,6 +8,9 @@ public class DestroyOldSection : MonoBehaviour
     [Tooltip("Distancia detrás del jugador para destruir la sección")]
     public float destroyDistance = 50f;
     
+    [Tooltip("Si está marcado, esta sección NUNCA se destruirá (para sección inicial)")]
+    public bool isPermanent = false;
+    
     [Header("Debug")]
     [Tooltip("Mostrar información de debug en consola")]
     public bool showDebug = false;
@@ -59,6 +62,12 @@ public class DestroyOldSection : MonoBehaviour
 
     void Update()
     {
+        // Si es permanente, nunca destruir
+        if (isPermanent)
+        {
+            return;
+        }
+        
         if (!hasFoundPlayer || player == null)
         {
             return;

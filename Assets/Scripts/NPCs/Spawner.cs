@@ -16,6 +16,12 @@ public class Spawner : MonoBehaviour
     void SpawnObject()
     {
         GameObject obj = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        
+        // IMPORTANTE: Desparentar el objeto spawneado para que no se destruya con la sección
+        obj.transform.SetParent(null);
+        
+        // Renombrar para debug
+        obj.name = $"{prefab.name}_Vehicle";
 
         // Buscar el componente MovingObject existente o agregarlo si no existe
         MovingObject mo = obj.GetComponent<MovingObject>();
@@ -29,7 +35,26 @@ public class Spawner : MonoBehaviour
         mo.target = targetPoint;
         mo.speed = Random.Range(minSpeed, maxSpeed);
         
-        Debug.Log($"NPC spawneado con velocidad: {mo.speed}, target: {targetPoint.name}");
+        // Añadir componente de gestión de vida
+        VehicleLifetime lifetime = obj.GetComponent<VehicleLifetime>();
+        if (lifetime == null)
+        {
+            lifetime = obj.AddComponent<VehicleLifetime>();
+            lifetime.maxLifetime = 90f; // 1.5 minutos máximo
+            lifetime.maxDistanceFromPlayer = 250f; // 250 metros del jugador (suficiente para 3 secciones adelante)
+        }
+        
+        // Añadir sistema de faros automático
+        VehicleHeadlights headlights = obj.GetComponent<VehicleHeadlights>();
+        if (headlights == null)
+        {
+            headlights = obj.AddComponent<VehicleHeadlights>();
+            // Los valores por defecto están bien, pero puedes personalizar aquí:
+            // headlights.headlightIntensity = 3f;
+            // headlights.headlightRange = 30f;
+        }
+        
+        Debug.Log($"🚗 Vehículo spawneado en {spawnPoint.position}, velocidad: {mo.speed:F2}, target: {targetPoint?.name ?? "NULL"}");
     }
 
 }

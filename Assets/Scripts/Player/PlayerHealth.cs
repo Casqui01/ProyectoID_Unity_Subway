@@ -272,12 +272,19 @@ public class PlayerHealth : MonoBehaviour
 	/// </summary>
 	public void Heal(int amount)
 	{
+		int previousHealth = currentHealth;
 		currentHealth += amount;
 		currentHealth = Mathf.Min(currentHealth, maxHealth);
 
 		if (showDebug)
 		{
-			Debug.Log($"💚 Jugador curado! Vida: {currentHealth}/{maxHealth}");
+			Debug.Log($"💚 Jugador curado! Vida: {previousHealth} → {currentHealth}/{maxHealth}");
+		}
+
+		// Notificar al GameManager del cambio de vida
+		if (GameManager.Instance != null && currentHealth != previousHealth)
+		{
+			GameManager.Instance.UpdateLives(currentHealth);
 		}
 	}
 

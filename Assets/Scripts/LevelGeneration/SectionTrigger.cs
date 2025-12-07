@@ -17,7 +17,7 @@ public class SectionTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Solo se activa con el jugador
-        if (!other.CompareTag("Player"))
+        if (!other.CompareTag("Player") && other.GetComponent<Movement>() == null)
         {
             if (showDebug)
             {
@@ -37,11 +37,12 @@ public class SectionTrigger : MonoBehaviour
         }
         
         // Cooldown global para evitar múltiples spawns simultáneos
-        if (Time.time - lastSpawnTime < spawnCooldown)
+        float timeSinceLastSpawn = Time.time - lastSpawnTime;
+        if (lastSpawnTime > 0 && timeSinceLastSpawn < spawnCooldown)
         {
             if (showDebug)
             {
-                Debug.Log($"⏱️ Cooldown activo. Esperando {spawnCooldown - (Time.time - lastSpawnTime):F2}s");
+                Debug.Log($"⏱️ Cooldown activo. Esperando {spawnCooldown - timeSinceLastSpawn:F2}s");
             }
             hasSpawned = true; // Marca como spawneado aunque no lo haga
             return;
@@ -49,6 +50,8 @@ public class SectionTrigger : MonoBehaviour
         
         hasSpawned = true; // Marca INMEDIATAMENTE para evitar múltiples activaciones
         lastSpawnTime = Time.time;
+        
+        Debug.Log($"🎯 TRIGGER ACTIVADO en: {gameObject.name} por {other.gameObject.name} (Time: {Time.time:F2})");
         
         if (showDebug)
         {
@@ -68,6 +71,9 @@ public class SectionTrigger : MonoBehaviour
             return;
         }
         
+        // Obtiene la posición base desde donde spawnear (la sección padre del trigger)
+        float baseZ = transform.parent != null ? transform.parent.position.z : 0f;
+        
         // Genera 2 secciones consecutivas para mayor profundidad
         for (int i = 0; i < 2; i++)
         {
@@ -80,13 +86,10 @@ public class SectionTrigger : MonoBehaviour
                 continue;
             }
             
-            // Calcula la posición: spawnDistance unidades adelante en Z desde la sección actual
-            // Multiplica por (i + 1) para la segunda sección
-            Vector3 spawnPosition = new Vector3(
-                transform.parent.position.x, 
-                transform.parent.position.y, 
-                transform.parent.position.z + (spawnDistance * (i + 1))
-            );
+            // Calcula la siguiente posición basada en la sección actual
+            // Primera iteración: baseZ + 42, Segunda: baseZ + 84
+            float nextZ = RoadSectionManager.Instance.GetNextSpawnZFrom(baseZ + (spawnDistance * i));
+            Vector3 spawnPosition = new Vector3(0f, 0f, nextZ);
             
             GameObject newSection = Instantiate(selectedSection, spawnPosition, Quaternion.identity);
             
@@ -97,8 +100,43 @@ public class SectionTrigger : MonoBehaviour
                 destroyer.destroyDistance = 50f;
             }
             
-            Debug.Log($"✅ Spawneada sección {i + 1}: {selectedSection.name} en {spawnPosition}");
+            Debug.Log($"✅ Spawneada sección {i + 1}: {selectedSection.name} en {spawnPosition} (base: {baseZ})");
         }
+    }
+    
+    /// <summary>
+    /// Resetea el trigger para poder usarlo de nuevo (útil al reiniciar el juego)
+    /// </summary>
+    public void ResetTrigger()
+    {
+        hasSpawned = false;
+        Debug.Log($"🔄 Trigger reseteado: {gameObject.name} (hasSpawned={hasSpawned})");
+    }
+    
+    /// <summary>
+    /// Resetea todos los triggers en la escena (llamar al reiniciar juego)
+    /// </summary>
+    public static void ResetAllTriggers()
+    {
+        // Resetear el tiempo estático primero
+        lastSpawnTime = 0f;
+        
+        SectionTrigger[] allTriggers = FindObjectsByType<SectionTrigger>(FindObjectsSortMode.None);
+        
+        Debug.Log($"🔄 Reseteando {allTriggers.Length} triggers (lastSpawnTime={lastSpawnTime}, Time.time={Time.time:F2})");
+        
+        if (allTriggers.Length == 0)
+        {
+            Debug.LogError("❌ NO SE ENCONTRARON TRIGGERS EN LA ESCENA! Asegúrate de que la sección permanente tiene un SectionTrigger.");
+        }
+        
+        foreach (SectionTrigger trigger in allTriggers)
+        {
+            Debug.Log($"   - Trigger encontrado en: {trigger.gameObject.name} (parent: {trigger.transform.parent?.name})");
+            trigger.ResetTrigger();
+        }
+        
+        Debug.Log($"✅ Todos los triggers reseteados correctamente");
     }
     
     // Visualización en Scene view

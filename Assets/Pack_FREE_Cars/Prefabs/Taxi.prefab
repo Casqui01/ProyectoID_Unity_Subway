@@ -277,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3607909790750507677}
   - component: {fileID: 7509727827929290260}
+  - component: {fileID: 6462970460163103877}
   - component: {fileID: 1902291834266546631}
   - component: {fileID: 8175894521707861527}
   - component: {fileID: 7619307222987840771}
@@ -321,6 +322,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MovingObject
   target: {fileID: 0}
   speed: 5
+--- !u!114 &6462970460163103877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8160049463398649625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50323d5d96a99274b93da12158cf1375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadlightSetup
+  createHeadlightsOnStart: 1
+  leftHeadlightPosition: {x: -0.75, y: 1, z: 2}
+  rightHeadlightPosition: {x: 0.75, y: 1, z: 2}
+  intensity: 3
+  range: 30
+  spotAngle: 70
+  color: {r: 1, g: 0.95, b: 0.85, a: 1}
+  downwardAngle: 5
 --- !u!114 &1902291834266546631
 MonoBehaviour:
   m_ObjectHideFlags: 0

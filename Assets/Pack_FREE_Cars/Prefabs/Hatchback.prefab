@@ -365,6 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1807256897596988560}
+  - component: {fileID: 1150595187087617485}
   - component: {fileID: 2780683481393336416}
   - component: {fileID: 8080626210629279878}
   - component: {fileID: 4080312293609642034}
@@ -396,6 +397,26 @@ Transform:
   - {fileID: 1907700678287040002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150595187087617485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769690492283750692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50323d5d96a99274b93da12158cf1375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadlightSetup
+  createHeadlightsOnStart: 1
+  leftHeadlightPosition: {x: -0.5, y: 0.5, z: 2}
+  rightHeadlightPosition: {x: 0.5, y: 0.5, z: 2}
+  intensity: 3
+  range: 30
+  spotAngle: 70
+  color: {r: 1, g: 0.95, b: 0.85, a: 1}
+  downwardAngle: 5
 --- !u!114 &2780683481393336416
 MonoBehaviour:
   m_ObjectHideFlags: 0

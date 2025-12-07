@@ -158,5 +158,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Coin
   rotationSpeed: 180
   rotationAxis: {x: 0, y: 1, z: 0}
-  sparkleEffect: {fileID: 0}
+  sparkleEffect: {fileID: 8808248797999067124, guid: 2cff547f5c333d641a7548a76c194ec3, type: 3}
   collectSound: {fileID: 0}
