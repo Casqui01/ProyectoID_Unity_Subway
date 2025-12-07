@@ -86,7 +86,7 @@ public class GameUI : MonoBehaviour
 			else
 			{
 				// Fallback con texto
-				coinsText.text = $"Coins: {score}";
+				coinsText.text = $"$ {score}";
 			}
 		}
 		else
